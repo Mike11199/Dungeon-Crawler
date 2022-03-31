@@ -7,6 +7,7 @@
 
 using namespace std;
 
+
 /*************************************************************************
  * Function Prototypes
  ************************************************************************/
@@ -20,11 +21,20 @@ bool preventSameRoomTwice(int[], int);
 int getValidRoomNumber(int[]);
 void roomGame(int[], int, int);
 
-//global variable for Array size or else need to pass into too many functions
+
+
+/*************************************************************************
+ * Global variables
+ ************************************************************************/
 const int ARRAYSIZE = 15;
 bool escaped = false;
 bool gameover = false;
 
+
+
+/*************************************************************************
+ * Main function for dungeon crawler starts here
+ ************************************************************************/
 int main()
 {
 
@@ -59,6 +69,8 @@ int main()
 
 
 }
+
+
 
 /*************************************************************************
  * This function prints a map of the dungeon using the dungeon tracker
@@ -99,7 +111,9 @@ void PrintDungeonMap(int dungeonTracker[])
 
 
 
-
+/*************************************************************************
+ * This creates the original dungeon map and places the player in the 1st element of the array as the current location
+ ************************************************************************/
 void InitializeDungeonMap(int dungeonTracker[])
 {
 	for (int i = 0; i < ARRAYSIZE; i++ )
@@ -113,7 +127,9 @@ void InitializeDungeonMap(int dungeonTracker[])
 
 
 
-
+/*************************************************************************
+ * Assign each of the dungeon obstacles an obstacle number.  The dungeonObstacles array is a parallel array to the dungeonTracker
+ ************************************************************************/
 void InitializeDungeonObstacles(int dungeonObstacles[], int obstacleCount)
 {
 	for (int i = 0; i < ARRAYSIZE; i++ )
@@ -131,7 +147,9 @@ void InitializeDungeonObstacles(int dungeonObstacles[], int obstacleCount)
 }
 
 
-
+/*************************************************************************
+ * This function allows the user to choose a room.  It marks the current room as visited and marks the new room as the current location
+ ************************************************************************/
 int chooseRoom(int dungeonTracker[])
 {
 	int roomNumber = getValidRoomNumber(dungeonTracker);
@@ -159,7 +177,13 @@ int chooseRoom(int dungeonTracker[])
 
 
 
-
+/*************************************************************************
+ * This function returns a bool that is true if the user already visited that room or if they are currently in it
+ *
+ *	//0 = not visited
+ *	//1 = current location
+ *	//2 = visited
+ ************************************************************************/
 bool preventSameRoomTwice(int dungeonTracker[], int roomNumber)
 {
 	bool alreadyVisited;
@@ -173,16 +197,24 @@ bool preventSameRoomTwice(int dungeonTracker[], int roomNumber)
 
 
 
-
+/*************************************************************************
+ * This function gets the next room number the user wants to go into.  It uses input validation to make
+ * sure it is valid and within the dungeonTracker array size.  It uses the preventSameRoomTwice function to prevent
+ * the user from going to the room they are already in or an already visited room.
+ *
+ *	//0 = not visited
+ *	//1 = current location
+ *	//2 = visited
+ ************************************************************************/
 int getValidRoomNumber(int dungeonTracker[])
 {
-	int roomNumber = 0;
-	while (roomNumber <= 0 || roomNumber >= ARRAYSIZE )
+	int roomNumber = -1;
+	while (roomNumber <= -1 || roomNumber >= ARRAYSIZE )
 	{
 		cout << "Enter what room you would like to go next: " << endl;
 		cin >> roomNumber;
 
-		if (!(roomNumber <= 0 || roomNumber >= ARRAYSIZE))
+		if (!(roomNumber <= -1 || roomNumber >= ARRAYSIZE))
 		{
 			bool alreadyVisited = preventSameRoomTwice(dungeonTracker, roomNumber);
 
@@ -200,6 +232,9 @@ int getValidRoomNumber(int dungeonTracker[])
 
 
 
+/*************************************************************************
+ * This function plays the game based on what obstacle is in the dungeontracker.
+ ************************************************************************/
 void roomGame(int dungeonObstacles[], int roomNumber, int obstacleCount)
 {
 
@@ -214,6 +249,7 @@ void roomGame(int dungeonObstacles[], int roomNumber, int obstacleCount)
 
 
 
+
 /*********************************************************************************************************************
  * This function assigns the exit door to a random position in the array.  This way there can only be one exit door.
  ********************************************************************************************************************/
@@ -225,6 +261,8 @@ int getRandomArrayExitNumber()
 	int randNumber = minVal + rand() % (maxVal - minVal + 1);
 	return randNumber;
 }
+
+
 
 
 /*********************************************************************************************************************
